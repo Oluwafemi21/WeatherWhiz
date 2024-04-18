@@ -41,7 +41,6 @@ const Forecast = () => {
             })
                 .catch((error) => {
                     setError(error.message)
-                    console.log(2)
                     setLoading(false);
                 })
     };
@@ -54,15 +53,19 @@ const Forecast = () => {
 
     const saveDataToLocalStorage = (item: string) => {
         const existingData = localStorage.getItem('cities') ? getItemsFromLocalStorage() : [];
-        
         const itemExists = existingData.includes(item);
 
         if (!itemExists) {
-            // Add the new item only if it doesn't already exist
-            const updatedData = [...existingData,item];
-            // updatedData.push(item)
-            localStorage.setItem('cities', JSON.stringify(updatedData));
-            
+            if (existingData.length === 5) {
+                existingData.pop();
+                // Add the new item only if it doesn't already exist
+                const updatedData = [...existingData,item];
+                localStorage.setItem('cities', JSON.stringify(updatedData)); 
+            } else {
+                const updatedData = [...existingData,item];
+                localStorage.setItem('cities', JSON.stringify(updatedData)); 
+            }
+             
         } else {
             return
         }
@@ -112,7 +115,7 @@ const Forecast = () => {
                         <div className="absolute h-fit w-full top-14 z-20 bg-white text-black rounded shadow p-3" onMouseLeave={()=> setShowRecent(false)}>
                         {getItemsFromLocalStorage().length  && (
                         <ul>
-                            {getItemsFromLocalStorage().slice(0,5).map((city:string) => {
+                            {getItemsFromLocalStorage().reverse().slice(0,5).map((city:string) => {
                                 return <li key={city} className="capitalize flex items-center w-full justify-between p-1">
                                     <div className="flex items-center gap-2">
                                     <svg className="h-4 w-4" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><path fill="currentColor" d="M20.59 22L15 16.41V7h2v8.58l5 5.01z"/><path fill="currentColor" d="M16 2A13.94 13.94 0 0 0 6 6.23V2H4v8h8V8H7.08A12 12 0 1 1 4 16H2A14 14 0 1 0 16 2"/></svg>
@@ -132,7 +135,7 @@ const Forecast = () => {
                         fetchCityLongitude(inputValue);
                     }}
                     className="p-2 disabled:cursor-not-allowed outline-none focus:outline-1 focus:outline-black focus:outline-offset-[-1px] bg-react-black text-white border-react-black rounded-r-full border cursor-pointer hover:opacity-80"
-                    disabled={loading}
+                    disabled={loading || !inputValue.length}
                 >
                     Search
                 </button>
