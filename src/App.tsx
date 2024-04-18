@@ -11,7 +11,7 @@ function App() {
   return (
     <>
       <div className="bg-white flex place-items-center">
-        <div className='max-w-[768px] min-h-screen mx-auto px-6 w-full'>
+        <div className='max-w-[768px] h-screen mx-auto px-6 w-full'>
           <Navbar />
           <Forecast />
         </div>
