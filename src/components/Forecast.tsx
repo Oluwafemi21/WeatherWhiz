@@ -26,6 +26,7 @@ const Forecast = () => {
     };
 
     const fetchCityLongitude = (city: string) => {
+        if(!inputValue) setInputValue(city)
         setError(null)
         setLoading(true);
         saveDataToLocalStorage(city)
@@ -99,6 +100,7 @@ const Forecast = () => {
         else setShowRecent(false)
     }
 
+
     return (
         <main>
             <div className="mt-5 rounded-full flex items-center divide-x">
@@ -116,11 +118,11 @@ const Forecast = () => {
                         {getItemsFromLocalStorage().length  && (
                         <ul>
                             {getItemsFromLocalStorage().reverse().slice(0,5).map((city:string) => {
-                                return <li key={city} className="capitalize flex items-center w-full justify-between p-1">
-                                    <div className="flex items-center gap-2">
-                                    <svg className="h-4 w-4" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><path fill="currentColor" d="M20.59 22L15 16.41V7h2v8.58l5 5.01z"/><path fill="currentColor" d="M16 2A13.94 13.94 0 0 0 6 6.23V2H4v8h8V8H7.08A12 12 0 1 1 4 16H2A14 14 0 1 0 16 2"/></svg>
-                                        <p> {city}</p>
-                                    </div>
+                                return <li key={city} className="flex items-center w-full justify-between p-1 hover:bg-gray-50 cursor-pointer">
+                                    <button className="flex items-center gap-2 flex-1" onClick={()=> fetchCityLongitude(city)}>
+                                        <svg className="h-4 w-4" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><path fill="currentColor" d="M20.59 22L15 16.41V7h2v8.58l5 5.01z"/><path fill="currentColor" d="M16 2A13.94 13.94 0 0 0 6 6.23V2H4v8h8V8H7.08A12 12 0 1 1 4 16H2A14 14 0 1 0 16 2"/></svg>
+                                            <p className="capitalize"> {city}</p>
+                                        </button>
                                     <button className="hover:underline text-red-500 text-sm" onClick={()=> removeItemFromLocalStorage(city)}>Remove</button>
                                 </li>
                             })}
