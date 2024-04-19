@@ -26,7 +26,7 @@ const Forecast = () => {
     };
 
     const fetchCityLongitude = (city: string) => {
-        if(!inputValue) setInputValue(city)
+        setInputValue(city)
         setError(null)
         setLoading(true);
         saveDataToLocalStorage(city)
